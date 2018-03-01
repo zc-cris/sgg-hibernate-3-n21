@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.zc.cris.n21.entity">
+	
+	<!-- entity类对应的table名末尾一定要加上S，否则会莫名其妙的出错 -->
+    <class name="Order" table="ORDERS">
+        <id name="id" type="java.lang.Integer">
+            <column name="ORDER_ID" />
+            <generator class="native" />
+        </id>
+        <property name="name" type="java.lang.String">
+            <column name="ORDER_NAME" />
+        </property>
+        
+        <!-- 多对一关系映射 
+        		name：表示多关联一的属性名
+        		class：表示一对应的类名
+        		column：表示一在多的数据表中的外键名(列名)
+        -->
+        <many-to-one name="customer" class="Customer" column="CUSTOMER_ID" foreign-key="forekey"></many-to-one>
+       
+    </class>
+</hibernate-mapping>
