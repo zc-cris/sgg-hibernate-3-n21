@@ -42,8 +42,10 @@
     	<property name="c3p0.max_statements">10</property>
     	
     	<!-- 引入对象关系映射文件 -->
-    	<mapping resource="com/zc/cris/n21/entity/Customer.hbm.xml"/>
-    	<mapping resource="com/zc/cris/n21/entity/Order.hbm.xml"/>
+    	<mapping resource="com/zc/cris/n21/Customer.hbm.xml"/>
+    	<mapping resource="com/zc/cris/n21/Order.hbm.xml"/>
+    	<mapping resource="com/zc/cris/n21/both/Customer.hbm.xml"/>
+    	<mapping resource="com/zc/cris/n21/both/Order.hbm.xml"/>
     	
     	</session-factory>
 </hibernate-configuration>

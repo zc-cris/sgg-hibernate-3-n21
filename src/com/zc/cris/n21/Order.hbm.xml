@@ -18,7 +18,7 @@
         		class：表示一对应的类名
         		column：表示一在多的数据表中的外键名(列名)
         -->
-        <many-to-one name="customer" class="Customer" column="CUSTOMER_ID" foreign-key="forekey"></many-to-one>
+        <many-to-one name="customer" class="Customer" column="CUSTOMER_ID"></many-to-one>
        
     </class>
 </hibernate-mapping>

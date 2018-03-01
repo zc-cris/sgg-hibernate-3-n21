@@ -1,4 +1,4 @@
-package com.zc.cris.n21.entity;
+package com.zc.cris.n21;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
