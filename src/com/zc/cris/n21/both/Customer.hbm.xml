@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.zc.cris.n21.both">
+
+    <class name="Customer" table="CUSTOMERS">
+        <id name="id" type="java.lang.Integer">
+            <column name="ID" />
+            <generator class="native" />
+        </id>
+        <property name="name" type="java.lang.String">
+            <column name="NAME" />
+        </property>
+        
+        <!-- 映射一对多的一中的对应多的那个set 集合属性，table 表示set 中的元素对应的那张表格名字 -->
+        <set name="orders" inverse="true" table="ORDERS">
+        	<!-- 执行多的那张表中的外键列的列名 -->
+        		<key column="CUSTOMER_ID"></key>
+        		<!-- 指定映射的 class 类型 -->
+        		<one-to-many class="Order"/>
+        </set>
+    </class>
+</hibernate-mapping>
