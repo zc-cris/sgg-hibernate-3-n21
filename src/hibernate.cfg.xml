@@ -41,9 +41,10 @@
     	<!-- 缓存 Statement 对象的数量 -->
     	<property name="c3p0.max_statements">10</property>
     	
-    	<!-- 引入对象关系映射文件 -->
+    	<!-- 引入对象关系映射文件 
     	<mapping resource="com/zc/cris/n21/Customer.hbm.xml"/>
     	<mapping resource="com/zc/cris/n21/Order.hbm.xml"/>
+    	-->
     	<mapping resource="com/zc/cris/n21/both/Customer.hbm.xml"/>
     	<mapping resource="com/zc/cris/n21/both/Order.hbm.xml"/>
     	

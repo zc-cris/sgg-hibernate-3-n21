@@ -20,7 +20,15 @@ class TestHibernate2 {
 	private SessionFactory sessionFactory = null;
 	private Session session = null;
 	private Transaction transaction = null;
-
+	
+	@Test
+	void testCascadeDelete() {
+		Customer customer = this.session.get(Customer.class, 1);
+		//孤儿删除，只会删除多，不会删除一
+		customer.getOrders().clear();
+	}
+	
+	
 	
 	@Test
 	void testMany21DeleteBoth() {
@@ -38,21 +46,31 @@ class TestHibernate2 {
 	}
 	
 	@Test
-	void testMany21GetBoth() {
-		
-		//查询多默认会延迟加载一，只有使用到了一才会发送select语句进行查询一，所以获取order对象的时候，其关联的
-		//customer对象是一个代理对象
-		Order order = this.session.get(Order.class, 3);
-		System.out.println(order.getName());
-		
-		//查询一的时候，如果session已经关了就会产生懒加载异常
-		this.session.close();
-		
-		System.err.println(order.getCustomer().getName());
+	void testMany21UpdateBoth() {
+		Customer customer = this.session.get(Customer.class, 1);
+		customer.getOrders().iterator().next().setName("jjj");
 	}
 	
 	@Test
-	void testMany21Save() {
+	void testMany21GetBoth() {
+		
+		//1. 查询一的时候对n的一端使用延迟加载
+		Customer customer = this.session.get(Customer.class, 3);
+		System.out.println(customer.getName());
+		
+		//查询一的时候，如果session已经关了就可能产生懒加载异常（后面如果还要查询多的具体数据就会发生）
+		//this.session.close();
+		
+		//2.返回多的一端的时候，是使用Hibernate的内置集合类型
+		//org.hibernate.collection.internal.PersistentSet
+		//这是一个javase的Set接口的实现类，具有延迟加载和存放代理对象的功能
+		//在需要使用集合中的元素的时候才会进行真正的初始化
+		System.err.println(customer.getOrders().getClass().getName());
+		System.out.println(customer.getOrders().size());
+	}
+	
+	@Test
+	void testMany21SaveBoth() {
 		Customer customer = new Customer();
 		customer.setName("james");
 		
@@ -61,14 +79,20 @@ class TestHibernate2 {
 		Order order2 = new Order();
 		order2.setName("order2");
 		
-		//设定关联关系
+		//设定双向关联关系
 		order1.setCustomer(customer);
 		order2.setCustomer(customer);
+		customer.getOrders().add(order1);
+		customer.getOrders().add(order2);
 		
+		//双向关系默认情况下双发都会维护关联关系，更新数据的时候会更新双方的情况
+		//一般都是设置多的一方来维护关联关系（类似于老师和学生相互记名字的情况），这个时候就要在一的
+		//映射文件里的set节点配置控制反转 inverse="true"，即一的一方失去控制关系，由多的一方维护双方关系
+		//好处就是不会有额外的update语句执行
 		//需要先保存一，再保存多（效率更高，否则会多出update语句，因为先插入多会无法确定外键值）
 		this.session.save(customer);
-		this.session.save(order1);
-		this.session.save(order2);
+//		this.session.save(order1);
+//		this.session.save(order2);
 	}
 	
 	

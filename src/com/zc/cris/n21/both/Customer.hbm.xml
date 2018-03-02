@@ -12,8 +12,15 @@
             <column name="NAME" />
         </property>
         
-        <!-- 映射一对多的一中的对应多的那个set 集合属性，table 表示set 中的元素对应的那张表格名字 -->
-        <set name="orders" inverse="true" table="ORDERS">
+        <!-- 映射一对多的一中的对应多的那个set 集合属性，table 表示set 中的元素对应的那张表格名字
+        		inverse:一般都是在一的一方设置为true，即失去维护关系
+        		cascade:设置级联操作，如果为delete，那么删除一的时候也会删除多
+        				如果取值为delete-orphan,即孤儿删除，删除多不删除一
+        				如果取值为save-update，保存一的时候自动保存多
+        				开发时不建议使用，一般都是手工操作
+        				order-by 在查询时，对集合中的元素排序，取值为表的字段名，而不是持久化类的属性名
+         -->
+        <set name="orders" inverse="true" table="ORDERS" cascade="save-update" order-by="ID desc">
         	<!-- 执行多的那张表中的外键列的列名 -->
         		<key column="CUSTOMER_ID"></key>
         		<!-- 指定映射的 class 类型 -->
